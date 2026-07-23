@@ -1,0 +1,27 @@
+{
+  "schema": "sim-da-blueprint",
+  "schemaVersion": 1,
+  "simulator": "dice-difference",
+  "name": "Nested dice baseline",
+  "runCount": 1000,
+  "roster": {
+    "militia": {"atk": 3, "def": 2},
+    "spearman": {"atk": 5, "def": 4},
+    "guardsman": {"atk": 8, "def": 7},
+    "menatarms": {"atk": 12, "def": 10},
+    "cavalry": {"atk": 20, "def": 17}
+  },
+  "armyA": {"militia": 100, "spearman": 0, "guardsman": 0, "menatarms": 0, "cavalry": 0},
+  "armyB": {"militia": 0, "spearman": 0, "guardsman": 30, "menatarms": 0, "cavalry": 0},
+  "config": {
+    "diceMode": "nested",
+    "dieASides": 10,
+    "dieBSides": 20,
+    "pctPerPoint": 2,
+    "nestedPenalty": 10,
+    "numStages": 10,
+    "aKnightBonusPct": 0,
+    "bKnightBonusPct": 0,
+    "seed": 12345
+  }
+}
