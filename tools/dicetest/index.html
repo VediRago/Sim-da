@@ -1,98 +1,228 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DA Battle Resolver — Dice Difference Lab</title>
-<style>
-:root{color-scheme:dark;--bg:#0c1117;--panel:#121a23;--panel2:#182330;--line:#2a394a;--text:#edf3f8;--muted:#91a3b6;--gold:#d9b85b;--blue:#4da3ff;--red:#ed6a71;--green:#55c98a}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,rgba(77,163,255,.09),transparent 30rem),var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}button,input,select,textarea{font:inherit}.shell{max-width:1380px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.top a{color:var(--muted);text-decoration:none}.chip{padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:#0d141d}.hero{margin-bottom:20px}.hero h1{margin:0;font-size:clamp(30px,4vw,46px)}.hero p{max-width:760px;color:var(--muted)}.tabs{display:flex;gap:8px;padding:6px;margin-bottom:18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.tab{padding:10px 15px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer}.tab.active{background:var(--gold);color:#241d0a}.tab-panel[hidden]{display:none}.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:18px;align-items:start}.column{display:grid;gap:18px}.card{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--panel2),var(--panel));overflow:hidden}.head{display:flex;justify-content:space-between;gap:14px;padding:17px 19px;border-bottom:1px solid var(--line)}.head h2{margin:0;font-size:17px}.head p{margin:4px 0 0;color:var(--muted);font-size:12px}.body{padding:19px}.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.field{display:grid;gap:6px}.field span{color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}input,select,textarea{width:100%;min-height:41px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#0d141d;color:var(--text)}textarea{min-height:110px;resize:vertical}.btn{min-height:41px;padding:8px 13px;border:1px solid var(--blue);border-radius:9px;background:transparent;color:#acd5ff;font-weight:800;cursor:pointer}.btn:hover{background:var(--blue);color:#07121d}.btn.primary{background:var(--gold);border-color:var(--gold);color:#241d0a}.btn.ghost{border-color:var(--line);color:var(--muted)}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.armies{display:grid;grid-template-columns:1fr 1fr;gap:14px}.army{padding:15px;border:1px solid var(--line);border-radius:11px;background:#0d141d}.army h3{margin:0 0 12px}.army-list{display:grid;gap:8px}.army-list label{display:grid;grid-template-columns:1fr 86px;gap:10px;align-items:center}.army-list input{text-align:right}.banners{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.banner{position:relative;min-height:150px;padding:18px;border:1px solid var(--line);border-radius:11px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.35)),#111820;overflow:hidden}.banner strong{display:block;margin-left:70px;font:700 22px Georgia,serif;color:#ead7a0}.flag{position:absolute;left:18px;top:15px;width:48px;height:70px}.pole{position:absolute;left:3px;width:3px;height:92px;background:#a18a5a}.cloth{position:absolute;left:7px;top:7px;width:40px;height:55px;clip-path:polygon(0 0,100% 8%,88% 72%,50% 100%,12% 72%);background:#2f77b6}.banner-b .cloth{background:#a44148}.sigil{position:absolute;left:18px;top:21px;width:20px;height:20px;border:2px solid #e8d092;transform:rotate(45deg)}.sigil:before,.sigil:after{content:"";position:absolute;background:#e8d092}.sigil:before{width:2px;height:27px;left:7px;top:-6px}.sigil:after{height:2px;width:27px;top:7px;left:-6px}.banner-b .sigil{border-radius:50%;transform:none}.banner-b .sigil:before{height:25px;left:8px;top:-4px;transform:rotate(45deg)}.banner-b .sigil:after{display:none}.units-preview{position:absolute;left:18px;right:18px;bottom:15px;display:flex;gap:6px;align-items:end;min-height:40px;color:var(--muted);font-size:12px}.pawn{width:24px;height:36px;border-radius:45% 45% 25% 25%;background:#2c3942;border:1px solid #7b8b97}.pawn.heavy{width:29px;height:42px}.pawn.cavalry{width:42px;height:32px;border-radius:50% 20% 35% 30%}.run{padding:17px;border:1px solid rgba(217,184,91,.3);border-radius:12px;background:rgba(217,184,91,.08)}.run h2{margin:0 0 4px}.run p{margin:0 0 13px;color:var(--muted)}.run-buttons{display:grid;grid-template-columns:1.35fr repeat(3,1fr);gap:8px}pre{min-height:310px;max-height:520px;margin:0;padding:14px;border:1px solid var(--line);border-radius:10px;background:#070b10;color:#cad6df;white-space:pre-wrap;overflow:auto;font:12px/1.6 Consolas,monospace}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}.metric{padding:11px;border:1px solid var(--line);border-radius:9px;background:#0d141d}.metric span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;font-weight:800}.metric strong{font-size:19px}.unit-head,.unit-row{display:grid;grid-template-columns:90px minmax(180px,1fr) 120px 120px 46px;gap:10px;align-items:end}.unit-head{padding:0 0 9px;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase}.unit-row{padding:11px 0;border-top:1px solid var(--line)}.remove{width:41px;height:41px;border:1px solid var(--line);border-radius:9px;background:#0d141d;color:var(--red);font-size:19px;cursor:pointer}.unit-actions{display:flex;justify-content:flex-end;margin-top:14px}.hint{color:var(--muted);font-size:12px}.status{position:sticky;bottom:12px;margin-top:18px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:rgba(13,20,29,.94);color:var(--muted)}@media(max-width:1050px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:repeat(3,1fr)}}@media(max-width:720px){.shell{padding:14px}.fields,.armies,.banners,.run-buttons,.metrics{grid-template-columns:1fr 1fr}.unit-head{display:none}.unit-row{grid-template-columns:80px 1fr 1fr}.unit-row .name{grid-column:span 2}.unit-row .remove-wrap{grid-column:3;grid-row:1}}@media(max-width:480px){.fields,.run-buttons,.metrics{grid-template-columns:1fr}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DA Battle Resolver</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="shell">
-  <div class="top"><a href="../../">← Simulation Lab</a><span class="chip">Engine <strong id="engineVersion">—</strong></span></div>
-  <section class="hero"><h1>Dice Difference Test</h1><p>Configure tiered units, build two armies, reproduce results with a seed, and export the full blueprint.</p></section>
-  <nav class="tabs"><button class="tab active" data-tab="battle">Battle setup</button><button class="tab" data-tab="units">Units &amp; tiers</button></nav>
+  <div class="shell">
+    <header class="top">
+      <div class="brand">DA · SIMULATION LAB</div>
+      <span class="chip">Engine <strong id="engineVersion">—</strong></span>
+    </header>
 
-  <section id="battleTab" class="tab-panel">
-    <main class="grid">
-      <div class="column">
-        <article class="card"><div class="head"><div><h2>Battle configuration</h2><p>Dice and stage settings.</p></div></div><div class="body"><div class="fields">
-          <label class="field"><span>Dice mode</span><select id="diceMode"><option value="single">Single die</option><option value="nested">Nested dice</option></select></label>
-          <label class="field"><span>Die A sides</span><input id="dieASides" type="number" min="1" value="10"></label>
-          <label class="field"><span>Die B sides</span><input id="dieBSides" type="number" min="1" value="20"></label>
-          <label class="field"><span>Modifier per point</span><input id="pctPerPoint" type="number" step=".1" value="2"></label>
-          <label class="field"><span>Nested penalty %</span><input id="nestedPenalty" type="number" step=".1" value="10"></label>
-          <label class="field"><span>Battle stages</span><input id="numStages" type="number" min="1" value="10"></label>
-          <label class="field"><span>Seed</span><input id="seed" type="number" value="12345"></label>
-          <button id="newSeed" class="btn ghost" type="button">New seed</button>
-        </div></div></article>
+    <section class="hero">
+      <h1>Battle Resolver</h1>
+      <p>
+        Configure tiered units, build two armies, and inspect deterministic
+        battle outcomes. The battle engine is separated from the interface so
+        it can be tested and safely edited by AI tools.
+      </p>
+    </section>
 
-        <article class="card"><div class="head"><div><h2>Army composition</h2><p>Every unit here comes from the Units &amp; tiers tab.</p></div></div><div class="body">
-          <div class="banners">
-            <section class="banner"><div class="flag"><span class="pole"></span><span class="cloth"></span><span class="sigil"></span></div><strong>Army A</strong><div id="previewA" class="units-preview">Add units below.</div></section>
-            <section class="banner banner-b"><div class="flag"><span class="pole"></span><span class="cloth"></span><span class="sigil"></span></div><strong>Army B</strong><div id="previewB" class="units-preview">Add units below.</div></section>
+    <nav class="tabs" aria-label="Application sections">
+      <button class="tab active" type="button" data-tab="battle">Battle setup</button>
+      <button class="tab" type="button" data-tab="units">Units &amp; tiers</button>
+    </nav>
+
+    <section id="battleTab">
+      <main class="grid">
+        <div class="column">
+          <article class="card">
+            <div class="head">
+              <h2>Battle configuration</h2>
+              <p>Dice, stages, and deterministic seed.</p>
+            </div>
+            <div class="body">
+              <div class="fields">
+                <label class="field">
+                  <span>Dice mode</span>
+                  <select id="diceMode">
+                    <option value="single">Single die</option>
+                    <option value="nested">Nested dice</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Outer die</span>
+                  <input id="dieASides" type="number" min="1" value="10">
+                </label>
+
+                <label class="field">
+                  <span>Main die</span>
+                  <input id="dieBSides" type="number" min="1" value="20">
+                </label>
+
+                <label class="field">
+                  <span>% per point</span>
+                  <input id="pctPerPoint" type="number" step="0.1" value="2">
+                </label>
+
+                <label class="field">
+                  <span>Battle stages</span>
+                  <input id="numStages" type="number" min="1" value="10">
+                </label>
+
+                <label class="field">
+                  <span>Seed</span>
+                  <input id="seed" type="number" min="0" value="12345">
+                </label>
+
+                <div class="field">
+                  <span>Seed control</span>
+                  <button id="newSeed" class="btn ghost" type="button">Generate seed</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="head">
+              <h2>Army composition</h2>
+              <p>Both armies use the exact same rules and dice process.</p>
+            </div>
+            <div class="body">
+              <div class="banners">
+                <div class="banner">
+                  <h3>Army A</h3>
+                  <small id="summaryA">No units selected</small>
+                  <div id="previewA" class="preview"></div>
+                </div>
+                <div class="banner b">
+                  <h3>Army B</h3>
+                  <small id="summaryB">No units selected</small>
+                  <div id="previewB" class="preview"></div>
+                </div>
+              </div>
+
+              <div class="armies">
+                <section class="army">
+                  <h3>Army A</h3>
+                  <div id="armyA" class="army-list"></div>
+                </section>
+                <section class="army">
+                  <h3>Army B</h3>
+                  <div id="armyB" class="army-list"></div>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <section class="run">
+            <h2>Run simulation</h2>
+            <p>
+              One battle shows every stage. Batch runs measure the distribution
+              across consecutive deterministic seeds.
+            </p>
+            <div class="run-buttons">
+              <button id="runOne" class="btn primary" type="button">Run detailed battle</button>
+              <button class="btn batch" type="button" data-count="100">Run 100</button>
+              <button class="btn batch" type="button" data-count="1000">Run 1,000</button>
+              <button class="btn batch" type="button" data-count="10000">Run 10,000</button>
+            </div>
+          </section>
+
+          <article class="card">
+            <div class="head">
+              <h2>Results</h2>
+              <p>Summary and stage output.</p>
+            </div>
+            <div class="body">
+              <div class="metrics">
+                <div class="metric"><span>Outcome</span><strong id="outcome">—</strong></div>
+                <div class="metric"><span>Army A</span><strong id="metricA">—</strong></div>
+                <div class="metric"><span>Army B</span><strong id="metricB">—</strong></div>
+                <div class="metric"><span>Margin</span><strong id="margin">—</strong></div>
+              </div>
+              <pre id="log">No test has been run.</pre>
+            </div>
+          </article>
+        </div>
+
+        <aside class="column">
+          <article class="card">
+            <div class="head">
+              <h2>Blueprint</h2>
+              <p>Save or restore configuration and army values.</p>
+            </div>
+            <div class="body column">
+              <label class="field">
+                <span>Name</span>
+                <input id="name" value="DA Battle Blueprint">
+              </label>
+
+              <label class="field">
+                <span>Preferred runs</span>
+                <input id="runCount" type="number" min="1" value="1000">
+              </label>
+
+              <div class="row">
+                <button id="exportJson" class="btn" type="button">Export JSON</button>
+                <button id="importJson" class="btn ghost" type="button">Import JSON</button>
+                <input id="fileInput" hidden type="file" accept=".json,application/json">
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="head">
+              <h2>UX case-study notes</h2>
+              <p>Record the hypothesis and conclusion.</p>
+            </div>
+            <div class="body column">
+              <textarea id="notes" placeholder="What were you testing? What changed? What did the result show?"></textarea>
+              <button id="downloadMd" class="btn primary" type="button">Download report</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="head">
+              <h2>Fairness check</h2>
+              <p>Useful when both armies contain the same units.</p>
+            </div>
+            <div class="body column">
+              <p class="hint">
+                Identical armies should converge toward equal A and B win rates.
+                Draws are counted separately. A warning appears when the gap is
+                larger than expected for the selected sample.
+              </p>
+              <button id="runFairness" class="btn" type="button">Test identical armies</button>
+              <div id="fairnessResult" class="fairness-result">Not tested.</div>
+            </div>
+          </article>
+        </aside>
+      </main>
+    </section>
+
+    <section id="unitsTab" hidden>
+      <article class="card">
+        <div class="head">
+          <h2>Units &amp; tiers</h2>
+          <p>Edit the baseline roster. Army lists update automatically.</p>
+        </div>
+        <div class="body">
+          <div class="unit-head">
+            <span>Portrait</span><span>Tier</span><span>Unit</span>
+            <span>Attack</span><span>Defense</span><span></span>
           </div>
-          <div class="armies"><section class="army"><h3>Army A</h3><div id="armyA" class="army-list"></div></section><section class="army"><h3>Army B</h3><div id="armyB" class="army-list"></div></section></div>
-        </div></article>
+          <div id="unitEditor"></div>
+          <div class="unit-actions">
+            <button id="addUnit" class="btn" type="button">+ Add unit</button>
+          </div>
+          <p class="hint">
+            Artwork is UI-only and is not embedded into JSON blueprints or reports.
+          </p>
+        </div>
+      </article>
+    </section>
 
-        <section class="run"><h2>Run simulation</h2><p>Inspect one battle in detail or test balance across a larger batch.</p><div class="run-buttons"><button id="runOne" class="btn primary">Run detailed battle</button><button class="btn batch" data-count="100">Run 100</button><button class="btn batch" data-count="1000">Run 1,000</button><button class="btn batch" data-count="5000">Run 5,000</button></div></section>
+    <div id="status" class="status" role="status" aria-live="polite">Ready.</div>
+  </div>
 
-        <article class="card"><div class="head"><div><h2>Results</h2><p>Summary and raw output.</p></div></div><div class="body"><div class="metrics"><div class="metric"><span>Outcome</span><strong id="outcome">—</strong></div><div class="metric"><span>Army A</span><strong id="metricA">—</strong></div><div class="metric"><span>Army B</span><strong id="metricB">—</strong></div><div class="metric"><span>Margin</span><strong id="margin">—</strong></div></div><pre id="log">No test has been run.</pre></div></article>
-      </div>
-
-      <aside class="column">
-        <article class="card"><div class="head"><div><h2>Blueprint</h2><p>Save or restore all values.</p></div></div><div class="body column"><label class="field"><span>Name</span><input id="name" value="Dice Difference Blueprint"></label><label class="field"><span>Preferred runs</span><input id="runCount" type="number" min="1" value="1000"></label><div class="row"><button id="exportJson" class="btn">Export JSON</button><button id="importJson" class="btn ghost">Import JSON</button><input id="fileInput" hidden type="file" accept=".json,application/json"></div></div></article>
-        <article class="card"><div class="head"><div><h2>Report</h2><p>Record the question and conclusion.</p></div></div><div class="body column"><textarea id="notes" placeholder="What were you testing? What did the result show?"></textarea><button id="downloadMd" class="btn primary">Download Markdown report</button></div></article>
-      </aside>
-    </main>
-  </section>
-
-  <section id="unitsTab" class="tab-panel" hidden>
-    <article class="card"><div class="head"><div><h2>Units &amp; tiers</h2><p>Edit names, tiers, attack and defense. Army lists update automatically.</p></div></div><div class="body"><div class="unit-head"><span>Tier</span><span>Unit</span><span>Attack</span><span>Defense</span><span></span></div><div id="unitEditor"></div><div class="unit-actions"><button id="addUnit" class="btn">+ Add unit</button></div><p class="hint">Knight is now a normal unit. There is no separate knight percentage bonus.</p></div></article>
-  </section>
-
-  <div id="status" class="status">Ready.</div>
-</div>
-<script src="simulator.js"></script>
-<script>
-'use strict';
-let units=[
-{id:'militia',tier:1,name:'Militia',atk:3,def:2},
-{id:'spearman',tier:1,name:'Levy Spearman',atk:5,def:4},
-{id:'guardsman',tier:2,name:'Guardsman',atk:8,def:7},
-{id:'menatarms',tier:3,name:'Men-at-Arms',atk:12,def:10},
-{id:'cavalry',tier:4,name:'Cavalry',atk:20,def:17},
-{id:'knight',tier:4,name:'Knight',atk:24,def:22}
-];
-let last=null;
-const $=id=>document.getElementById(id);
-const num=(id,d=0)=>{const el=$(id),v=el?Number(el.value):NaN;return Number.isFinite(v)?v:d};
-$('engineVersion').textContent=DASimulator.VERSION;
-function msg(t){$('status').textContent=t}
-function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')||'unit'}
-function unique(base){let x=slug(base),i=2;while(units.some(u=>u.id===x))x=slug(base)+'_'+i++;return x}
-function snapshot(){const c={A:{},B:{}};for(const side of ['A','B'])for(const u of units)c[side][u.id]=num(side.toLowerCase()+'_'+u.id);return c}
-function renderEditor(){
- $('unitEditor').innerHTML=units.map(u=>`<div class="unit-row" data-id="${u.id}"><label class="field"><span>Tier</span><input class="tier" type="number" min="1" value="${u.tier}"></label><label class="field name"><span>Unit name</span><input class="uname" value="${u.name}"></label><label class="field"><span>Attack</span><input class="atk" type="number" value="${u.atk}"></label><label class="field"><span>Defense</span><input class="def" type="number" value="${u.def}"></label><div class="remove-wrap"><button class="remove" type="button" aria-label="Remove ${u.name}">×</button></div></div>`).join('');
- document.querySelectorAll('.unit-row').forEach(r=>{const u=units.find(x=>x.id===r.dataset.id);r.querySelector('.tier').oninput=e=>{u.tier=Math.max(1,Number(e.target.value)||1);renderArmies(true)};r.querySelector('.uname').oninput=e=>{u.name=e.target.value||'Unnamed unit';renderArmies(true)};r.querySelector('.atk').oninput=e=>u.atk=Number(e.target.value)||0;r.querySelector('.def').oninput=e=>u.def=Number(e.target.value)||0;r.querySelector('.remove').onclick=()=>{units=units.filter(x=>x.id!==u.id);renderAll()}})
-}
-function renderArmies(preserve=true){const counts=preserve?snapshot():{A:{},B:{}};for(const side of ['A','B']){$('army'+side).innerHTML=units.slice().sort((a,b)=>a.tier-b.tier||a.name.localeCompare(b.name)).map(u=>`<label><span>Tier ${u.tier} · ${u.name}</span><input id="${side.toLowerCase()}_${u.id}" type="number" min="0" value="${counts[side][u.id]??0}"></label>`).join('');for(const u of units)$(side.toLowerCase()+'_'+u.id).oninput=renderPreview}renderPreview()}
-function renderPreview(){for(const side of ['A','B']){const out=[];for(const u of units){const c=Math.min(4,Math.max(0,Math.floor(num(side.toLowerCase()+'_'+u.id))));const cls=u.name.toLowerCase().includes('caval')?'cavalry':u.tier>=3?'heavy':'';for(let i=0;i<c;i++)out.push(`<span class="pawn ${cls}" title="Tier ${u.tier} ${u.name}"></span>`)}$('preview'+side).innerHTML=out.length?out.join(''):'Add units below.'}}
-function renderAll(){renderEditor();renderArmies(true)}
-function blueprint(){const roster={},armyA={},armyB={};for(const u of units){roster[u.id]={name:u.name,tier:u.tier,atk:u.atk,def:u.def};armyA[u.id]=Math.max(0,num('a_'+u.id));armyB[u.id]=Math.max(0,num('b_'+u.id))}return DASimulator.normalizeBlueprint({name:$('name').value,runCount:Math.max(1,Math.floor(num('runCount',1000))),roster,armyA,armyB,config:{diceMode:$('diceMode').value,dieASides:Math.max(1,Math.floor(num('dieASides',10))),dieBSides:Math.max(1,Math.floor(num('dieBSides',20))),pctPerPoint:num('pctPerPoint',2),nestedPenalty:num('nestedPenalty',10),numStages:Math.max(1,Math.floor(num('numStages',10))),seed:Math.floor(num('seed',12345))>>>0}})}
-function apply(b){b=DASimulator.normalizeBlueprint(b);units=Object.entries(b.roster).map(([id,r])=>({id,tier:Math.max(1,Number(r.tier)||1),name:r.name||id,atk:Number(r.atk)||0,def:Number(r.def)||0}));renderEditor();renderArmies(false);for(const u of units){$('a_'+u.id).value=b.armyA[u.id]??0;$('b_'+u.id).value=b.armyB[u.id]??0}for(const k of ['diceMode','dieASides','dieBSides','pctPerPoint','nestedPenalty','numStages','seed'])$(k).value=b.config[k];$('name').value=b.name;$('runCount').value=b.runCount||1000;renderPreview();msg('Blueprint loaded.')}
-function runOne(){const b=blueprint(),r=DASimulator.runBattle(b,b.config.seed,true),lines=[`Seed=${r.seed}`,`A base Atk=${r.aBaseAtk.toFixed(1)} Def=${r.aBaseDef.toFixed(1)} | B base Atk=${r.bBaseAtk.toFixed(1)} Def=${r.bBaseDef.toFixed(1)}`,''];for(const s of r.stages)lines.push(`Stage ${s.stage}: A_mod=${s.aModifierPct.toFixed(1)}% B_mod=${s.bModifierPct.toFixed(1)}% | A=${s.aPower.toFixed(1)} B=${s.bPower.toFixed(1)}`,`  A: ${s.aRollDetail}`,`  B: ${s.bRollDetail}`);lines.push('',`FINAL A=${r.aTotal.toFixed(1)} B=${r.bTotal.toFixed(1)} Winner=${r.winner} Margin=${r.margin.toFixed(1)}`);last={b,text:lines.join('\n'),created:new Date().toISOString()};$('log').textContent=last.text;$('outcome').textContent=r.winner;$('metricA').textContent=r.aTotal.toFixed(1);$('metricB').textContent=r.bTotal.toFixed(1);$('margin').textContent=Math.abs(r.margin).toFixed(1);msg('Detailed battle complete.')}
-function runMany(c){const b=blueprint(),r=DASimulator.runMany(b,c),t=`Ran ${r.count} battles. Seeds ${r.baseSeed}..${r.lastSeed}\n\nA wins: ${r.aWins} (${r.aWinPct.toFixed(1)}%)\nB wins: ${r.bWins} (${r.bWinPct.toFixed(1)}%)\nDraws: ${r.draws} (${r.drawPct.toFixed(1)}%)\n\nAverage absolute margin: ${r.averageMargin.toFixed(2)}\nAverage signed margin: ${r.averageSignedMargin.toFixed(2)}\nLargest margin: ${r.largestMargin.toFixed(2)}\nSmallest margin: ${r.smallestMargin.toFixed(2)}`;last={b,text:t,created:new Date().toISOString()};$('log').textContent=t;$('outcome').textContent=r.aWins>r.bWins?'A':r.bWins>r.aWins?'B':'Even';$('metricA').textContent=r.aWinPct.toFixed(1)+'%';$('metricB').textContent=r.bWinPct.toFixed(1)+'%';$('margin').textContent=r.averageMargin.toFixed(2);msg(c+' battles complete.')}
-function download(name,text,type){const url=URL.createObjectURL(new Blob([text],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),500)}
-document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===btn));$('battleTab').hidden=btn.dataset.tab!=='battle';$('unitsTab').hidden=btn.dataset.tab!=='units'});
-$('addUnit').onclick=()=>{units.push({id:unique('new_unit'),tier:1,name:'New Unit',atk:1,def:1});renderAll()};
-$('newSeed').onclick=()=>{$('seed').value=crypto.getRandomValues(new Uint32Array(1))[0];msg('New seed generated.')};
-$('runOne').onclick=runOne;document.querySelectorAll('.batch').forEach(b=>b.onclick=()=>runMany(Number(b.dataset.count)));
-$('exportJson').onclick=()=>{const b=blueprint();download(slug(b.name)+'_blueprint.json',JSON.stringify(b,null,2),'application/json')};
-$('importJson').onclick=()=>$('fileInput').click();$('fileInput').onchange=async()=>{try{apply(JSON.parse(await $('fileInput').files[0].text()))}catch(e){msg('Import failed: '+e.message)}$('fileInput').value=''};
-$('downloadMd').onclick=()=>{if(!last)return msg('Run a test first.');const md=`# ${last.b.name}\n\n- Created: ${last.created}\n- Engine: ${DASimulator.VERSION}\n- Seed: ${last.b.config.seed}\n\n## Notes\n\n${$('notes').value||'No notes.'}\n\n## Blueprint\n\n\`\`\`json\n${JSON.stringify(last.b,null,2)}\n\`\`\`\n\n## Results\n\n\`\`\`text\n${last.text}\n\`\`\`\n`;download(slug(last.b.name)+'_report.md',md,'text/markdown')};
-renderAll();
-</script>
+  <script src="simulator.js"></script>
+  <script src="report.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>
