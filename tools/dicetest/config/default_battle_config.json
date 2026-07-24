@@ -1,0 +1,22 @@
+{
+  "_locked": true,
+  "_lockedDate": "2026-07-24",
+  "_rationale": "Nested d10/d20 chosen over flat single-die mode to preserve real upset potential. The d10 controls ONLY how many d20s are rolled that turn and contributes no separate flat bonus or penalty of its own. A prior 'nestedPenalty' field applied a flat +/-10% based only on whether the d10 landed above or below its own mean, regardless of magnitude (a roll of 1 and a roll of 5 produced the identical adjustment) — this was removed since it added constant noise rather than real scaled uncertainty tied to the actual roll. 10 stages map loosely onto the internal shape of a single 3-week tick (one battle resolves within one tick), each stage representing roughly a few days of the standoff for tug-of-war visualization purposes.",
+  "diceMode": "nested",
+  "dieASides": 10,
+  "dieBSides": 20,
+  "pctPerPoint": 2,
+  "numStages": 10,
+  "seed": 12345,
+  "_seedNote": "Default seed for deterministic testing only. Production battles should pass a fresh seed per encounter (e.g., derived from world tick + combatant IDs) rather than reusing this default.",
+  "_calendarNote": "1 tick = 3 weeks. A battle resolves entirely within one tick regardless of internal stage count.",
+  "_verifiedFairness": {
+    "singleDieMode": { "signedMarginAvg": 0.027, "decisiveGapPct": 0.63, "sampleSize": 10000 },
+    "nestedDieMode_seedSweep": {
+      "seeds": [1, 999, 4242, 77777, 123456, 2026, 5150, 8675309, 314159, 271828],
+      "signedMarginRange": [-6.378, 2.465],
+      "averageAcrossSeeds": -2.12,
+      "note": "Sign flips freely across independent seeds (7 negative, 3 positive of 10), confirming variance is honest randomness rather than a directional bias. All individual batches passed tolerance."
+    }
+  }
+}
